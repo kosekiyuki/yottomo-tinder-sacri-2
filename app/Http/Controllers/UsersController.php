@@ -91,7 +91,24 @@ class UsersController extends Controller
         // usersテーブルの中から、【Judy】を取得し、$userに格納
         $user = User::find($id);
         // $userに格納された【Judy】をフレンドしている人たちを$futuresに格納→【Jet】と【Yuki】
-        $futures = $user->futures()->paginate(10);
+        
+        // $futures = $user->futures()->paginate(10);
+        
+        // zuttomoしたらzuttomoタブに飛ばせる＆自分がfriendしてない人は出ない
+        $futures = User_friend::join('users','users.id','=','user_friend.friend_id')
+                    ->select()
+                    ->where('user_id',$id)
+                                 ->paginate(10);
+                                 
+        // $futures1 = User_friend::join('users','users.id','=','user_friend.friend_id')
+        //             ->select()
+        //             ->where('user_id',$id)
+        //                          ->paginate(10);
+                                 
+        // $futures2 = User_friend::join('users','users.id','=','user_zuttomo.zuttomo_id')
+        //             ->select()
+        //             ->where('user_id',$id)
+        //                          ->paginate(10);
         
         // $userに格納された【Judy】がフレンドしている人たちを$friendsに格納→【Jet】
         // $friends = $user->friends()->paginate(10);
@@ -107,15 +124,32 @@ class UsersController extends Controller
         
         
         // $futures = $user->futures()->where('friend_id', '=', $id)->get();
+        $user2 = User::find($id);
 
         $data = [
             'user' => $user,
             'users' => $futures,
+            
+            // 'users' => $futures1||$futures2,
+        ];
+        
+        $futures2 = DB::table('user_zuttomo')->join('users','users.id','=','user_zuttomo.zuttomo_id')
+                    ->select()
+                    ->where('user_id',$id)
+                                 ->paginate(10);
+        dd($user);
+        $data2 = [
+            'user' => $user2,
+            'users' => $futures2,
+            
+            // 'users' => $futures1||$futures2,
         ];
 
         $data += $this->counts($user);
 
-        return view('users.futures', $data);
+        // ここがおかC
+        return view('users.futures', $data,$data2);
+        
     }
     
     // public function futures($id)
@@ -147,6 +181,30 @@ class UsersController extends Controller
         // $users = DB::table('users')->get();
 
         // return view('users.futures', ['users' => $users]);
+    
+    
+    // future2
+    public function futures2($id)
+    {
+        // usersテーブルの中から、【Judy】を取得し、$userに格納
+        $user2 = User::find($id);
+        
+        // zuttomoしたらzuttomoタブに飛ばせる＆自分がfriendしてない人は出ない
+        $futures2 = User_zuttomo::join('users','users.id','=','user_zuttomo.zuttomo_id')
+                    ->select()
+                    ->where('user_id',$id)
+                                 ->paginate(10);
+
+        $data = [
+            'user' => $user2,
+            'users' => $futures2,
+            // 'users' => $futures1||$futures2,
+        ];
+
+        $data += $this->counts($user2);
+
+        return view('users.futures2', $data);
+    }
     
     
 }

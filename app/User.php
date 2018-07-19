@@ -192,7 +192,11 @@ class User extends Authenticatable
             
         // }
         
+        // friendしてくれた人が出る
         return $this->belongsToMany(User::class, 'user_friend', 'friend_id', 'user_id')->withTimestamps();
+        // zuttomoしてくれた人が出る
+        // return $this->belongsToMany(User::class, 'user_zuttomo', 'zuttomo_id', 'user_id')->withTimestamps();
+        
         
         // $futures2 = $this->belongsToMany(User::class, 'user_friend', 'user_id', 'friend_id');
         // return $futures2;
@@ -215,4 +219,28 @@ class User extends Authenticatable
     }
     
     
+    
+    // future2
+    public function futures2()
+    {
+        // friendしてくれた人が出る
+        // return $this->belongsToMany(User::class, 'user_friend', 'friend_id', 'user_id')->withTimestamps();
+        // zuttomoしてくれた人が出る
+        return $this->belongsToMany(User::class, 'user_zuttomo', 'zuttomo_id', 'user_id')->withTimestamps();
+        
+    }
+    
+    public function future2($userId){
+        $its_me = $this->id == $userId;
+        
+        if ($its_me) {
+             $futures2 = User_zuttomo::join('users','users.id','=','user_zuttomo.zuttomo_id')
+                        ->select()
+                        ->where('user_id', $userId);
+            return $futures2;
+        } else {
+            // do nothing if not following
+            return false;
+        }
+    }
 }

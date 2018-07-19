@@ -41,4 +41,10 @@ class UserFriendController extends Controller
         return redirect()->back();
     }
     
+    // future2 store
+    public function future2(Request $request, $id)
+    {
+        \Auth::user()->future2($id);
+        return redirect()->back();
+    }
 }

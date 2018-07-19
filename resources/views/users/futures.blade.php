@@ -22,6 +22,9 @@
                 <li role="presentation" class="{{ Request::is('users/*/zuttomoings') ? 'active' : '' }}"><a href="{{ route('users.zuttomoings', ['id' => $user->id]) }}">ズッ友たち<span class="badge">{{ $count_zuttomoings }}</span></a></li>
             </ul>
             @include('users.users', ['users' => $users])
+            @include('users.users', ['users' => $user2])
+            
+            <!--{{ $user->futures2 }}-->
         </div>
     </div>
 @endsection

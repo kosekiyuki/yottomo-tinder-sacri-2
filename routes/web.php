@@ -46,6 +46,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('future', 'UserFriendController@future')->name('user.future');
         Route::get('futures', 'UsersController@futures')->name('users.futures');
         
+        Route::get('futures2', 'UsersController@futures2')->name('users.futures2');
+        
     });
     
     Route::resource('memos', 'MemosController', ['only' => ['store', 'destroy']]);

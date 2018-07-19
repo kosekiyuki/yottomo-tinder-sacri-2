@@ -16,12 +16,14 @@ class Controller extends BaseController
         $count_friends = $user->friends()->count();
         $count_zuttomoings = $user->zuttomoings()->count();
         $count_futures = $user->futures()->count();
+        $count_futures2 = $user->futures2()->count();
 
         return [
             'count_memos' => $count_memos,
             'count_friends' => $count_friends,
             'count_zuttomoings' => $count_zuttomoings,
-            'count_futures' => $count_futures,
+            // 'count_futures' => $count_futures,
+            'count_futures' => $count_futures + $count_futures2,
         ];
     }
 }
